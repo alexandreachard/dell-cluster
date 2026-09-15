@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Export GITHUB_TOKEN for mise so it doesn't hit GitHub API rate limits
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  export MISE_GITHUB_TOKEN="$GITHUB_TOKEN"
+fi
+
+# Fail early if mise is missing
+if ! command -v /usr/local/bin/mise >/dev/null 2>&1; then
+  echo "ERROR: mise not found at /usr/local/bin/mise" >&2
+  exit 1
+fi
+
+# Resolve workspace path (Dev Containers mount your repo under /workspaces/<name>)
+WORKSPACE_DIR="${WORKSPACE_DIR:-${PWD}}"
+
+# Point to your repo's mise.toml
+MISE_FILE="$WORKSPACE_DIR/mise.toml"
+
+if [[ -f "$MISE_FILE" ]]; then
+  /usr/local/bin/mise trust "$MISE_FILE"
+  /usr/local/bin/mise install
+else
+  echo "WARN: $MISE_FILE not found. Skipping mise install."
+fi
+
+# Trust .envrc so direnv auto-loads KUBECONFIG
+ENVRC_FILE="$WORKSPACE_DIR/.envrc"
+if [[ -f "$ENVRC_FILE" ]] && command -v direnv >/dev/null 2>&1; then
+  direnv allow "$ENVRC_FILE"
+fi
+
+# Set zsh as default shell if available
+if command -v zsh >/dev/null 2>&1; then
+  sudo chsh -s "$(command -v zsh)" "$USER" || true
+fi

@@ -1,0 +1,22 @@
+{
+  "name": "Dell Cluster",
+  // 1. Build from Dockerfile
+  "build": {
+    "context": "..",
+    "dockerfile": "Dockerfile"
+  },
+  // 2. Lifecycle scripts
+  "postCreateCommand": "scripts/setup",
+  // 3. Storage and mounts
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind,Z",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  // 4. Podman / Fedora SELinux compatibility
+  "runArgs": [
+    "--userns=keep-id"
+  ],
+  // 5. Environment variables
+  "containerEnv": {
+    "KUBECONFIG": "/workspaces/${localWorkspaceFolderBasename}/kubeconfig",
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}"
+  }
+}
