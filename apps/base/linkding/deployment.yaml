@@ -31,10 +31,10 @@ spec:
               mountPath: /etc/linkding/data
 
           envFrom:
-            #            - configMapRef:
-            #              name: linkding-configmap
+            # - configMapRef:
+            #     name: linkding-configmap
             - secretRef:
-              name: linkding-container-env
+                name: linkding-container-env
 
       volumes:
         - name: linkding-data
