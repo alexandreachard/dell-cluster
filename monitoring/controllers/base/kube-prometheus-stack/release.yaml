@@ -25,8 +25,23 @@ spec:
       - paths: ["/metadata/annotations/prometheus-operator-validated"]
         target:
           kind: PrometheusRule
-  valuesFrom:
-    - kind: Secret
-      name: grafana-admin-pwd
-      valuesKey: grafana-admin-password
-      targetPath: grafana.adminPassword
+  values:
+    grafana:
+      admin:
+        existingSecret: grafana-admin-pwd
+        passwordKey: grafana-admin-password
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        hosts:
+          - grs.alexandreachard.net
+        path: /
+        tls:
+          - secretName: grafana-tls-secret
+            hosts:
+              - grs.alexandreachard.net
+  # valuesFrom:
+  #   - kind: Secret
+  #     name: grafana-admin-pwd
+  #     valuesKey: grafana-admin-password
+  #     targetPath: grafana.adminPassword
