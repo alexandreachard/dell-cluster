@@ -29,6 +29,7 @@ spec:
     grafana:
       admin:
         existingSecret: grafana-admin-pwd
+        userKey: grafana-admin-user
         passwordKey: grafana-admin-password
       ingress:
         enabled: true
