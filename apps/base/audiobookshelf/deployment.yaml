@@ -27,9 +27,15 @@ spec:
           # securityContext:
           #   allowPrivilegeEscalation: false
 
-          # volumeMounts:
-          #   - name: audiobookshelf-data
-          #     mountPath: /etc/audiobookshelf/data
+          volumeMounts:
+            - name: audiobookshelf-config
+              mountPath: /config
+            - name: audiobookshelf-metadata
+              mountPath: /metadata
+            - name: audiobookshelf-audiobooks
+              mountPath: /audiobooks
+            - name: audiobookshelf-podcasts
+              mountPath: /podcasts
 
           envFrom:
             - configMapRef:
@@ -37,8 +43,18 @@ spec:
             # - secretRef:
             #     name: audiobookshelf-container-env
 
-          # volumes:
-          #   - name: audiobookshelf-data
-          #     persistentVolumeClaim:
-          #       claimName: audiobookshelf-data-pvc
+          volumes:
+            - name: audiobookshelf-config
+              persistentVolumeClaim:
+                claimName: audiobookshelf-config
+            - name: audiobookshelf-metadata
+              persistentVolumeClaim:
+                claimName: audiobookshelf-metadata
+            - name: audiobookshelf-audiobooks
+              persistentVolumeClaim:
+                claimName: audiobookshelf-audiobooks
+            - name: audiobookshelf-podcasts
+              persistentVolumeClaim:
+                claimName: audiobookshelf-podcasts
+
           restartPolicy: Always
