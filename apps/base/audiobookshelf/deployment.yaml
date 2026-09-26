@@ -43,18 +43,18 @@ spec:
             # - secretRef:
             #     name: audiobookshelf-container-env
 
-          volumes:
-            - name: audiobookshelf-config
-              persistentVolumeClaim:
-                claimName: audiobookshelf-config
-            - name: audiobookshelf-metadata
-              persistentVolumeClaim:
-                claimName: audiobookshelf-metadata
-            - name: audiobookshelf-audiobooks
-              persistentVolumeClaim:
-                claimName: audiobookshelf-audiobooks
-            - name: audiobookshelf-podcasts
-              persistentVolumeClaim:
-                claimName: audiobookshelf-podcasts
+      volumes:
+        - name: audiobookshelf-config
+          persistentVolumeClaim:
+            claimName: audiobookshelf-config
+        - name: audiobookshelf-metadata
+          persistentVolumeClaim:
+            claimName: audiobookshelf-metadata
+        - name: audiobookshelf-audiobooks
+          persistentVolumeClaim:
+            claimName: audiobookshelf-audiobooks
+        - name: audiobookshelf-podcasts
+          persistentVolumeClaim:
+            claimName: audiobookshelf-podcasts
 
-          restartPolicy: Always
+      restartPolicy: Always
