@@ -4,5 +4,14 @@
     "fileMatch": [
       "\\.yaml$"
     ]
-  }
+  },
+  "packageRules": [
+    {
+      "matchPackagePrefixes": [
+        "ghcr.io/fluxcd/"
+      ],
+      "groupName": "fluxcd controllers",
+      "groupSlug": "fluxcd-controllers"
+    }
+  ]
 }
