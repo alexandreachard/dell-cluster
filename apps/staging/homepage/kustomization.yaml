@@ -3,6 +3,7 @@ kind: Kustomization
 namespace: homepage
 resources:
   - ../../base/homepage/
+  - ingress.yaml
 patches:
   - target:
       kind: Deployment
