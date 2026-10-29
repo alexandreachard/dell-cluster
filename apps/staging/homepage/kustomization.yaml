@@ -16,3 +16,6 @@ patches:
         path: /metadata/annotations
         value: 
           environment: staging
+      - op: replace
+        path: /spec/template/spec/containers/0/env/1/value
+        value: "$(MY_POD_IP):3000,homepage.alexandreachard.net"

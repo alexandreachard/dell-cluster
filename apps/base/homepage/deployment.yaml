@@ -25,6 +25,14 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
 
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "$(MY_POD_IP):3000"
+
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
