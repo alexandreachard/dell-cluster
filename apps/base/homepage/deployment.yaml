@@ -42,19 +42,17 @@ spec:
             periodSeconds: 15
 
           volumeMounts:
-            - name: homepage-config
+            - name: homepage-merged-config
               mountPath: /app/config
-            - name: homepage-services
-              mountPath: /app/config/services.yaml
-              subPath: services.yaml
-            - mountPath: /app/config/logs
-              name: logs
+            - name: logs
+              mountPath: /app/config/logs
       volumes:
-        - name: homepage-config
-          configMap:
-            name: homepage-configmap
-        - name: homepage-services
-          secret:
-            secretName: homepage-services-secret
+        - name: homepage-merged-config
+          projected:
+            sources:
+              - configMap:
+                  name: homepage-configmap
+              - secret:
+                  name: homepage-services-secret
         - name: logs
           emptyDir: {}

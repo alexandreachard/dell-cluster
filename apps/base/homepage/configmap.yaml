@@ -23,7 +23,7 @@ data:
           cpu: true
           memory: true
           showLabel: true
-          label: "dell-cluster"
+          label: "k8s-cluster"
         nodes:
           show: true
           cpu: true
@@ -34,7 +34,6 @@ data:
         cpu: true
         memory: true
   bookmarks.yaml: "[]"
-  services.yaml: "[]"
   docker.yaml: ""
   proxmox.yaml: ""
   custom.css: ""
