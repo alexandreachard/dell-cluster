@@ -35,14 +35,9 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - grs.alexandreachard.net
+          - ${GRAFANA_HOST}
         path: /
         tls:
           - secretName: grafana-tls-secret
             hosts:
-              - grs.alexandreachard.net
-  # valuesFrom:
-  #   - kind: Secret
-  #     name: grafana-admin-pwd
-  #     valuesKey: grafana-admin-password
-  #     targetPath: grafana.adminPassword
+              - ${GRAFANA_HOST}

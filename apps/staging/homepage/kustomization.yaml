@@ -4,6 +4,7 @@ namespace: homepage
 resources:
   - ../../base/homepage/
   - ingress.yaml
+  - homepage-services-secret.yaml
 patches:
   - target:
       kind: Deployment
@@ -18,4 +19,4 @@ patches:
           environment: staging
       - op: replace
         path: /spec/template/spec/containers/0/env/1/value
-        value: "$(MY_POD_IP):3000,homepage.alexandreachard.net"
+        value: "$(MY_POD_IP):3000,${HOMEPAGE_HOST}"

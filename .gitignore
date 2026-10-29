@@ -1,1 +1,5 @@
 kubeconfig
+.devcontainer/
+scripts/
+mise.toml
+.envrc

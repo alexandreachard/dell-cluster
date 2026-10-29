@@ -12,6 +12,7 @@ spec:
       labels:
         app: homepage
     spec:
+      serviceAccountName: homepage
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -33,14 +34,27 @@ spec:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "$(MY_POD_IP):3000"
 
+          livenessProbe:
+            httpGet:
+              path: /api/healthcheck
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+
           volumeMounts:
             - name: homepage-config
               mountPath: /app/config
+            - name: homepage-services
+              mountPath: /app/config/services.yaml
+              subPath: services.yaml
             - mountPath: /app/config/logs
               name: logs
       volumes:
         - name: homepage-config
           configMap:
             name: homepage-configmap
+        - name: homepage-services
+          secret:
+            secretName: homepage-services-secret
         - name: logs
           emptyDir: {}

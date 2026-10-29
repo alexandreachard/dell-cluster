@@ -8,10 +8,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - homepage.alexandreachard.net
+        - ${HOMEPAGE_HOST}
       secretName: homepage-tls
   rules:
-    - host: homepage.alexandreachard.net
+    - host: ${HOMEPAGE_HOST}
       http:
         paths:
           - backend:

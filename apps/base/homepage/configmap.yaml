@@ -3,11 +3,39 @@ kind: ConfigMap
 metadata:
   name: homepage-configmap
 data:
-  settings.yaml: ""
+  settings.yaml: |
+    title: "Homelab"
+    theme: dark
+    color: slate
+    layout:
+      Infrastructure:
+        style: row
+        columns: 3
+      Applications:
+        style: row
+        columns: 3
+  kubernetes.yaml: |
+    mode: cluster
+  widgets.yaml: |
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "dell-cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+    - resources:
+        backend: resources
+        expanded: true
+        cpu: true
+        memory: true
   bookmarks.yaml: "[]"
   services.yaml: "[]"
-  widgets.yaml: "[]"
-  kubernetes.yaml: ""
   docker.yaml: ""
+  proxmox.yaml: ""
   custom.css: ""
   custom.js: ""

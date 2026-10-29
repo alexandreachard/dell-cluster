@@ -12,6 +12,10 @@ spec:
     name: flux-system
   path: ./monitoring/controllers/staging
   prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars-secret
   decryption:
     provider: sops
     secretRef:
@@ -31,6 +35,10 @@ spec:
     name: flux-system
   path: ./monitoring/configs/staging
   prune: true
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: cluster-vars-secret
   decryption:
     provider: sops
     secretRef:
