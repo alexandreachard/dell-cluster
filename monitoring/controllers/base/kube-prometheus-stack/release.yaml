@@ -34,10 +34,12 @@ spec:
       ingress:
         enabled: true
         ingressClassName: traefik
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
         hosts:
           - ${GRAFANA_HOST}
         path: /
         tls:
-          - secretName: grafana-tls-secret
+          - secretName: grafana-tls
             hosts:
               - ${GRAFANA_HOST}
