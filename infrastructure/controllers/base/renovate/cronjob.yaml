@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:latest
+              image: renovate/renovate:44.257.7
               args:
                 - alexandreachard/dell-cluster
 

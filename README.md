@@ -55,5 +55,3 @@ apps/
 
 - Single node: no HA, no node failure testing.
 - No backups of persistent volumes yet.
-- Two images still use `:latest` (`cloudflared` for linkding, `renovate`),
-  so Renovate cannot track them.
