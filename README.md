@@ -30,7 +30,6 @@ monitoring/              # kube-prometheus-stack HelmRelease
 apps/
   base/                  # plain manifests per app
   staging/               # overlay: ingress, tunnels, secrets, patches
-.devcontainer/ + mise    # pinned tooling: kubectl, flux, sops, helm, k9s...
 ```
 
 ## Choices
@@ -40,7 +39,6 @@ apps/
   Only `data`/`stringData` are encrypted, so manifests stay readable in diffs.
 - **Kustomize for my apps, Helm for third-party stacks**: my manifests stay plain YAML;
   cert-manager and kube-prometheus-stack come from their charts.
-- **Dev Container + mise**: same tool versions on any machine.
 
 ## Things I learned the hard way
 
