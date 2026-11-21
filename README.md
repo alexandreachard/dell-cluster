@@ -1,43 +1,59 @@
-# Dell Optiplex Kubernetes Homelab
+# dell-cluster
 
-A GitOps-managed Kubernetes cluster running on Dell Optiplex hardware, built as part of a hands-on Kubernetes course.
+My homelab Kubernetes cluster: K3s on a Dell Optiplex, fully managed from Git with Flux.
+Started in September 2026 during a hands-on Kubernetes course, and kept running since.
 
-## Architecture
+Nothing is applied by hand: every change goes through a commit, Flux reconciles it,
+and Renovate opens PRs for image and chart updates.
 
-- **Cluster:** Bare-metal Kubernetes on Dell Optiplex nodes
-- **GitOps:** Flux CD with Kustomize overlays
-- **Secret Management:** SOPS with Age encryption
-- **Environment:** Staging overlay with promotion-ready structure
+## What runs on it
 
-## Stack
+| Layer | Components |
+| :-- | :-- |
+| Cluster | K3s, single node (`v1.36.3+k3s1`), Ubuntu 26.04 |
+| GitOps | Flux (Kustomize controller + Helm controller) |
+| Secrets | SOPS + Age, decrypted by Flux at apply time |
+| Ingress & TLS | Traefik (K3s built-in), cert-manager with Cloudflare DNS-01 |
+| Public access | Cloudflare Tunnel (`cloudflared`), outbound-only, no open port |
+| Monitoring | kube-prometheus-stack (Prometheus, Grafana, Alertmanager) |
+| Updates | Renovate, self-hosted as a Kubernetes CronJob |
+| Apps | linkding, audiobookshelf, homepage |
 
-| Component | Tool |
-|---|---|
-| GitOps Controller | Flux CD |
-| Configuration | Kustomize |
-| Secret Encryption | SOPS + Age |
-| Cluster Admin | kubectl, kubectx, kubens, k9s |
-| Package Management | Helm |
-| Dev Environment | Dev Containers + Mise |
-
-## Repository Structure
+## Repository layout
 
 ```
-clusters/staging/       # Flux bootstrap and cluster-level config
-apps/base/              # Base application manifests (Kustomize)
-apps/staging/           # Staging overlay
-scripts/                # Cluster setup automation
-.devcontainer/          # Reproducible dev environment
+clusters/staging/        # Flux entry point: one Kustomization per layer
+infrastructure/
+  controllers/           # cert-manager, Renovate
+  configs/               # ClusterIssuers (depends on controllers)
+monitoring/              # kube-prometheus-stack HelmRelease
+apps/
+  base/                  # plain manifests per app
+  staging/               # overlay: ingress, tunnels, secrets, patches
+.devcontainer/ + mise    # pinned tooling: kubectl, flux, sops, helm, k9s...
 ```
 
-## Key Decisions
+## Choices
 
-- **Flux over ArgoCD:** Chosen for its Git-native pull model and lightweight footprint on constrained hardware.
-- **SOPS + Age over Sealed Secrets:** Simpler key management, no controller dependency, encryption at rest in Git.
-- **Dev Containers + Mise:** Ensures every contributor has identical tooling (kubectl, flux, sops, helm, k9s) regardless of host OS.
-- **Kustomize over Helm for apps:** Keeps application manifests transparent and auditable without template abstraction.
+- **Flux**: pull-based, lightweight on a single small node.
+- **SOPS + Age**: secrets stay encrypted in Git, no extra controller to run.
+  Only `data`/`stringData` are encrypted, so manifests stay readable in diffs.
+- **Kustomize for my apps, Helm for third-party stacks**: my manifests stay plain YAML;
+  cert-manager and kube-prometheus-stack come from their charts.
+- **Dev Container + mise**: same tool versions on any machine.
 
-## Status
+## Things I learned the hard way
 
-Actively being built as part of a GitOps/Kubernetes learning course.
+- `volumes` sits next to `containers`, `volumeMounts` inside the container.
+- A ConfigMap mount is read-only: homepage needed an `emptyDir` for its logs.
+- To put a ConfigMap and a Secret in the same directory, use a `projected` volume.
+- I tested Flux on purpose: deleted a Service from Git to check pruning, pushed
+  a broken image tag to check that the rolling update keeps the old pods running.
+- Moved from a manually created TLS Secret to cert-manager (DNS-01 through Cloudflare).
 
+## Not done yet
+
+- Single node: no HA, no node failure testing.
+- No backups of persistent volumes yet.
+- Two images still use `:latest` (`cloudflared` for linkding, `renovate`),
+  so Renovate cannot track them.
