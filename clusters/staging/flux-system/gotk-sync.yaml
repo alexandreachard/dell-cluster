@@ -11,7 +11,7 @@ spec:
     branch: main
   secretRef:
     name: flux-system
-  url: git@github.com:alexandreachard/k3s-gitops-homelab.git
+  url: ssh://git@github.com/alexandreachard/k3s-gitops-homelab
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
