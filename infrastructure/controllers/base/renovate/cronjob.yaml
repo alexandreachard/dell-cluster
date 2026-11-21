@@ -14,7 +14,7 @@ spec:
             - name: renovate
               image: renovate/renovate:44.257.7
               args:
-                - alexandreachard/dell-cluster
+                - alexandreachard/k3s-gitops-homelab
 
               envFrom:
                 - secretRef:

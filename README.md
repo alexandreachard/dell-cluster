@@ -1,4 +1,4 @@
-# dell-cluster
+# k3s-gitops-homelab
 
 My homelab Kubernetes cluster: K3s on a Dell Optiplex, fully managed from Git with Flux.
 Started in September 2026 during a hands-on Kubernetes course, and kept running since.
